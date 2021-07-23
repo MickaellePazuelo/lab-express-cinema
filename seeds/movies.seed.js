@@ -1,4 +1,22 @@
 // To insert in "seeds/movies.seed.js"
+const mongoose = require(“mongoose”) ;
+
+const Movie = require(“../models/Movie.model”);
+
+const MONGODB_URI = “mongodb://localhost:27017/lab-movie”;
+
+mongoose
+.connect(MONGODB_URI, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+.then (() => {
+  console.log('success');
+});
+.catch((error) => {
+  console.log(error);
+});
 
 const movies = [
   {
@@ -82,6 +100,13 @@ const movies = [
     showtimes: ["13:00", "15:30", "18:00", "20:10", "22:40"]
   }
 ];
+
+Movie.create(movies)
+  .then((moviesFromDB) => {
+    console.log(`Created ${moviesFromDB.length} movies`);
+    mongoose.connection.close();
+  })
+  .catch((err) => console.log(`An error occured:${err}`));
 
 // Add here the script that will be run to actually seed the database (feel free to refer to the previous lesson)
 
